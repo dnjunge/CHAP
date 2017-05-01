@@ -2,34 +2,30 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <ScrollView
         android:layout_width="wrap_content"
         android:id="@+id/chart_scroll"
-        android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="30dp">
 
-        <ListView
-            android:id="@+id/chart_county_list"
-            android:layout_width="137dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="#f00"
-            android:dividerHeight="1dp"/>
-
-        <TextView
-            android:id="@+id/county_chart_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:textColor="#303F9F" />
-
-
-    </FrameLayout>
+            android:orientation="vertical" >
+            <TextView
+                android:id="@+id/county_chart_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#303F9F" />
+        </LinearLayout>
+    </ScrollView>
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/single_bar_chart"
@@ -37,7 +33,9 @@
         android:layout_toRightOf="@+id/chart_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-         />
+        android:layout_marginBottom="30dp"
+        />
 
 </RelativeLayout>
+
 

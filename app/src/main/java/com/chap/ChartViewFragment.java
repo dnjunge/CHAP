@@ -19,10 +19,13 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +36,9 @@ public class ChartViewFragment extends Fragment{
 
     private ArrayList columnContent;
     private DatabaseHelper myDB;
-    ListView countyList;
+    TextView countyList;
     String currentTable;
+    int[] countyColors;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,7 @@ public class ChartViewFragment extends Fragment{
         myDB = new DatabaseHelper(getActivity());
         columnContent = myDB.getEntriesInCol("County", "kenya_population_per_county");
         currentTable = getArguments().getString("currentTable");
-
+        countyColors = getContext().getResources().getIntArray(R.array.county_colors);
     }
 
     @Override
@@ -57,34 +61,41 @@ public class ChartViewFragment extends Fragment{
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-        countyList = (ListView)getView().findViewById(R.id.chart_county_list);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.fragment_chart_view, R.id.county_chart_textView, columnContent);
-        countyList.setAdapter(arrayAdapter);
+        countyList = (TextView)getView().findViewById(R.id.county_chart_textView);
+       // ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), R.layout.fragment_chart_view, R.id.county_chart_textView, columnContent);
+       // countyList.setAdapter(arrayAdapter);
+        ArrayList<String> counties = myDB.getEntriesInCol("County", currentTable);
+        int color = 0;
+        for(String county: counties){
+            countyList.append(county);
+            countyList.append(System.getProperty("line.separator"));
+            countyList.setTextColor(countyColors[color]);
+            color++;
+        }
 
         ArrayList<String> columnData = myDB.getEntriesInCol("Population", currentTable);
 
         BarChart barChart = (BarChart)getView().findViewById(R.id.single_bar_chart);
 
-
         List<BarEntry> entries = new ArrayList<BarEntry>();
 
-        int i = 0;
+        float i = 0;
+        int x = 0;
         for(String data : columnData){
             data= data.replace(",", "");
-            entries.add(new BarEntry(Float.parseFloat(data), ));
+            entries.add(new BarEntry(i, Float.parseFloat(data), columnContent.get(x)));
             i++;
+            x++;
         }
 
-        BarDataSet dataset = new BarDataSet(entries, "population");
-        //dataset.setColor(R.color.colorAccent);
-       // dataset.setValueTextColor(R.color.colorPrimaryDark);
-
+        BarDataSet dataset = new BarDataSet(entries, "County Population");
+        dataset.setColors(countyColors);
         BarData data = new BarData(dataset);
-
         barChart.setData(data);
+
+
 
     }
 
 
 }
-

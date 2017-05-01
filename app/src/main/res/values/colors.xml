@@ -4,4 +4,102 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#FFFFFF</color>
+    <color name="color_BARINGO">#e1118c</color>
+    <color name="color_BOMET">#abde9a</color>
+    <color name="color_BUNGOMA">#9c4784</color>
+    <color name="color_BUSIA">#95d718</color>
+    <color name="color_ELGEYO_MARAKWET">#4c752f</color>
+    <color name="color_EMBU">#86dbbc</color>
+    <color name="color_GARISSA">#f49e54</color>
+    <color name="color_HOMABAY">#e56e7a</color>
+    <color name="color_ISIOLO">#bc002c</color>
+    <color name="color_KAJIADO">#393925</color>
+    <color name="color_KAKAMEGA">#f1b595</color>
+    <color name="color_KERICHO">#e7afcb</color>
+    <color name="color_KIAMBU">#05a45d</color>
+    <color name="color_KILIFI">#878895</color>
+    <color name="color_KIRINYAGA">#60f972</color>
+    <color name="color_KISII">#724ebf</color>
+    <color name="color_KISUMU">#a46c67</color>
+    <color name="color_KITUI">#31d466</color>
+    <color name="color_KWALE">#21e1f6</color>
+    <color name="color_LAIKIPIA">#03c340</color>
+    <color name="color_LAMU">#4f0b02</color>
+    <color name="color_MACHAKOS">#8208a2</color>
+    <color name="color_MAKUENI">#303f08</color>
+    <color name="color_MANDERA">#8c910f</color>
+    <color name="color_MARSABIT">#6212db</color>
+    <color name="color_MERU">#82e268</color>
+    <color name="color_MIGORI">#d04502</color>
+    <color name="color_MOMBASA">#43e8cb</color>
+    <color name="color_MURANGA">#a17982</color>
+    <color name="color_NAIROBI">#e4d6b3</color>
+    <color name="color_NAKURU">#5c33fe</color>
+    <color name="color_NANDI">#74bed5</color>
+    <color name="color_NAROK">#bb65b1</color>
+    <color name="color_NYAMIRA">#749a6a</color>
+    <color name="color_NYANDARUA">#030178</color>
+    <color name="color_NYERI">#710b58</color>
+    <color name="color_SAMBURU">#1d0ce8</color>
+    <color name="color_SIAYA">#d3214c</color>
+    <color name="color_TAITA_TAVETA">#c68160</color>
+    <color name="color_TANA_RIVER">#a66abf</color>
+    <color name="color_THARAKA_NITHI">#6bdb60</color>
+    <color name="color_TRANS_NZOIA">#675a98</color>
+    <color name="color_TURKANA">#776578</color>
+    <color name="color_UASIN_GISHU">#d1bca4</color>
+    <color name="color_VIHIGA">#d4ee14</color>
+    <color name="color_WAJIR">#cd9d2a</color>
+    <color name="color_WEST_POKOT">#92c066</color>
+
+    <array name="county_colors">
+        <item>@color/color_BARINGO</item>
+        <item>@color/color_BOMET</item>
+        <item>@color/color_BUNGOMA</item>
+        <item>@color/color_BUSIA</item>
+        <item>@color/color_ELGEYO_MARAKWET</item>
+        <item>@color/color_EMBU</item>
+        <item>@color/color_GARISSA</item>
+        <item>@color/color_HOMABAY</item>
+        <item>@color/color_ISIOLO</item>
+        <item>@color/color_KAJIADO</item>
+        <item>@color/color_KAKAMEGA</item>
+        <item>@color/color_KERICHO</item>
+        <item>@color/color_KIAMBU</item>
+        <item>@color/color_KILIFI</item>
+        <item>@color/color_KIRINYAGA</item>
+        <item>@color/color_KISII</item>
+        <item>@color/color_KISUMU</item>
+        <item>@color/color_KITUI</item>
+        <item>@color/color_KWALE</item>
+        <item>@color/color_LAIKIPIA</item>
+        <item>@color/color_LAMU</item>
+        <item>@color/color_MACHAKOS</item>
+        <item>@color/color_MAKUENI</item>
+        <item>@color/color_MANDERA</item>
+        <item>@color/color_MARSABIT</item>
+        <item>@color/color_MERU</item>
+        <item>@color/color_MIGORI</item>
+        <item>@color/color_MOMBASA</item>
+        <item>@color/color_MURANGA</item>
+        <item>@color/color_NAIROBI</item>
+        <item>@color/color_NAKURU</item>
+        <item>@color/color_NANDI</item>
+        <item>@color/color_NAROK</item>
+        <item>@color/color_NYAMIRA</item>
+        <item>@color/color_NYANDARUA</item>
+        <item>@color/color_NYERI</item>
+        <item>@color/color_SAMBURU</item>
+        <item>@color/color_SIAYA</item>
+        <item>@color/color_TAITA_TAVETA</item>
+        <item>@color/color_TANA_RIVER</item>
+        <item>@color/color_THARAKA_NITHI</item>
+        <item>@color/color_TRANS_NZOIA</item>
+        <item>@color/color_TURKANA</item>
+        <item>@color/color_UASIN_GISHU</item>
+        <item>@color/color_VIHIGA</item>
+        <item>@color/color_WAJIR</item>
+        <item>@color/color_WEST_POKOT</item>
+    </array>
+
 </resources>
