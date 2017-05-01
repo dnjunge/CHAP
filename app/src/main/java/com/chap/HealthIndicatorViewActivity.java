@@ -72,6 +72,7 @@ public class HealthIndicatorViewActivity extends AppCompatActivity {
                 break;
             case R.id.action_view_chart:
                 selectedViewFragment = new ChartViewFragment();
+                selectedViewFragment.setArguments(sendIndicatorBundle);
                 break;
 
         }
