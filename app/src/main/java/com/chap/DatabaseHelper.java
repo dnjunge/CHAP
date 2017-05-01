@@ -96,5 +96,25 @@ public class DatabaseHelper extends SQLiteAssetHelper {
 
     }
 
+    public String getChartType(String table){
+        String query;
+        String chartType = null;
+        String column ="ChartType";
+        SQLiteDatabase countyDB = getReadableDatabase();
+        SQLiteQueryBuilder queryDB = new SQLiteQueryBuilder();
+        table = String.format("'%s'", table);
+        query = String.format("SELECT Chart_Type FROM Chart_Type WHERE Ref_Table = %s", table);
+        Cursor c = countyDB.rawQuery(query, null);
+
+        try{
+                c.moveToFirst();
+                chartType = ( c.getString(0) );
+        }
+        finally {
+            c.close();
+        }
+        return chartType;
+    }
+
 
 }

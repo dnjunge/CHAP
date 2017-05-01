@@ -36,6 +36,7 @@ public class HealthIndicatorsListActivity extends AppCompatActivity {
         myDB = new DatabaseHelper(this);
         tableNames = myDB.getTableNames();
         tableNames.remove("android_metadata");
+        tableNames.remove("Chart_Type");
 
         userPref = this.getSharedPreferences("userPref", MODE_PRIVATE);
         editPref = userPref.edit();
