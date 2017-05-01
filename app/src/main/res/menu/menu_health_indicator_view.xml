@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/action_view_table"
+        android:icon="@drawable/ic_grid_on_black_24dp"
+        android:title="@string/table_menu" />
+    <item
+        android:id="@+id/action_view_chart"
+        android:icon="@drawable/ic_equalizer_black_24dp"
+        android:title="@string/chart_menu" />
+
+</menu>
