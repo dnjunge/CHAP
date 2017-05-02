@@ -118,7 +118,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             editPref.commit();
             Context context = getApplicationContext();
             CharSequence text = getString(R.string.signed_in_fmt, userName);
-            int duration = Toast.LENGTH_LONG;
+            int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.getView().setBackgroundColor(getResources().getColor(R.color.colorAccent));

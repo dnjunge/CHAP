@@ -44,14 +44,12 @@ public class SelectOptionActivity extends AppCompatActivity implements OnClickLi
         String selectedOption = buttonPressed.getText().toString();
 
         if(selectedOption.equals("Population Health Indicators")) {
-            Toast.makeText(this, "Population Health Indicators Selected", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, HealthIndicatorsListActivity.class);
             startActivity(intent);
 
         }
         else {
-            Toast.makeText(this, "County Option Selected", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, CountySummaryActivity.class);
+             Intent intent = new Intent(this, CountySummaryActivity.class);
             startActivity(intent);
 
         }

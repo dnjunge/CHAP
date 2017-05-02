@@ -141,7 +141,6 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         String record = null;
         SQLiteDatabase countyDB = getReadableDatabase();
         SQLiteQueryBuilder queryDB = new SQLiteQueryBuilder();
-        //row = String.format("'%s'", row);
         column = String.format("\"%s\"", column);
         query = String.format("SELECT %s FROM %s WHERE _id = %s",column, table, row);
         Cursor c = countyDB.rawQuery(query, null);
@@ -154,6 +153,18 @@ public class DatabaseHelper extends SQLiteAssetHelper {
             c.close();
         }
         return record;
+    }
+
+    public Cursor getDatabaseCRecordwithID(String table, String column, int row){
+        String query;
+        String record = null;
+        SQLiteDatabase countyDB = getReadableDatabase();
+        SQLiteQueryBuilder queryDB = new SQLiteQueryBuilder();
+        column = String.format("\"%s\"", column);
+        query = String.format("SELECT %s FROM %s WHERE _id = %s",column, table, row);
+        Cursor c = countyDB.rawQuery(query, null);
+
+        return c;
     }
 
 

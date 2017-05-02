@@ -11,18 +11,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical" >
 
-            <GridView
-                android:id="@+id/County_Summary_Grid"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="184dp" />
+                android:layout_height="200dp">
+
+                <TableLayout
+                    android:id="@+id/county_summary_table"
+                    android:stretchColumns="*"
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:showDividers="beginning|middle|end"
+                    android:scrollbars="vertical">
+                </TableLayout>
+            </ScrollView>
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/Sec_School_Line_chart"
                 android:layout_width="match_parent"
-                android:layout_height="247dp"
+                android:layout_height="238dp"
                 />
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/immunization_Line_chart"
