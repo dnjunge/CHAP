@@ -52,6 +52,7 @@ public class HealthIndicatorsListActivity extends AppCompatActivity {
         indicatorsList = (ListView) findViewById(R.id.indicators_list);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.content_health_indicators_list, R.id.indicators_textView, formatedTableNames);
         indicatorsList.setAdapter(arrayAdapter);
+        getSupportActionBar().setTitle("Select Health Indicator");
 
         indicatorsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

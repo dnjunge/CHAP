@@ -24,6 +24,7 @@ public class SelectOptionActivity extends AppCompatActivity implements OnClickLi
 
     Button healthIndicatorsButton;
     Button countySummaryButton;
+    Button audioSignalsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class SelectOptionActivity extends AppCompatActivity implements OnClickLi
 
         countySummaryButton = (Button) findViewById(R.id.countyselect_button);
         countySummaryButton.setOnClickListener(this);
+
+        audioSignalsButton = (Button) findViewById(R.id.audio_signal_button);
+        audioSignalsButton.setOnClickListener(this);
     }
 
     @Override
@@ -48,10 +52,13 @@ public class SelectOptionActivity extends AppCompatActivity implements OnClickLi
             startActivity(intent);
 
         }
-        else {
+        else if(selectedOption.equals("County Summary")){
              Intent intent = new Intent(this, CountySummaryActivity.class);
             startActivity(intent);
-
+        }
+        else{
+            Intent intent = new Intent(this, MyAudioSignalActivity.class);
+            startActivity(intent);
         }
 
     }

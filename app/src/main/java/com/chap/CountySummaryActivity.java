@@ -41,6 +41,8 @@ public class CountySummaryActivity extends AppCompatActivity {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.content_county_summary, R.id.county_textView, columnContent);
         countyList.setAdapter(arrayAdapter);
 
+        getSupportActionBar().setTitle("Select County");
+
         countyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
