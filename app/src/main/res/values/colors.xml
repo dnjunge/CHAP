@@ -102,4 +102,8 @@
         <item>@color/color_WEST_POKOT</item>
     </array>
 
+    <array name="stacked_bar_colors">
+        <item>@color/color_WAJIR</item>
+        <item>@color/color_WEST_POKOT</item>
+    </array>
 </resources>
