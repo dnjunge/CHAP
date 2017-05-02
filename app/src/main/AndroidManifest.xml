@@ -45,7 +45,8 @@
         <activity
             android:name=".HealthIndicatorViewActivity"
             android:label=""
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
+        <activity android:name=".CountySummaryViewActivity"></activity>
     </application>
 
 </manifest>

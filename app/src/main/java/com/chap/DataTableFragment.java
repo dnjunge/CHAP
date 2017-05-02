@@ -52,6 +52,17 @@ public class DataTableFragment extends Fragment{
 
         String[] headerTxt = myDB.getColumnHeaders(currentTable);
 
+        //Remove _id column
+        for (int i = 0; i < headerTxt.length; i++)
+        {
+            if (headerTxt[i].equals("_id"))
+            {
+                headerTxt[i] = null;
+                break;
+            }
+        }
+
+
         // Reference to TableLayout
         TableLayout tableHeaderLayout=(TableLayout) getView().findViewById(R.id.tbl_header);
         TableLayout tableLayout=(TableLayout) getView().findViewById(R.id.data_table_layout);
@@ -70,10 +81,13 @@ public class DataTableFragment extends Fragment{
                 while (cursor.moveToNext()) {
 
                     ArrayList<String> colText = new ArrayList<String>();
-                    String[] columnNames = myDB.getColumnHeaders(currentTable);
+                    String[] columnNames = headerTxt;
+                            //myDB.getColumnHeaders(currentTable);
 
                     for(String element : columnNames) {
-                        colText.add(cursor.getString(cursor.getColumnIndex(element)));
+                        if(element !=null && !element.equals("")) {
+                            colText.add(cursor.getString(cursor.getColumnIndex(element)));
+                        }
                     }
 
                     // data rows
@@ -88,6 +102,7 @@ public class DataTableFragment extends Fragment{
                         tv.setGravity(Gravity.CENTER);
                         tv.setTextSize(16);
                         tv.setPadding(5, 5, 5, 5);
+                        tv.setBackground(getResources().getDrawable(R.drawable.table_view_backgrd));
                         tv.setText(text);
                         row.addView(tv);
                     }
@@ -116,25 +131,28 @@ public class DataTableFragment extends Fragment{
         final TableRow firstRow = (TableRow)tableLayout.getChildAt(0);
         int i = 0;
         for(String c:headerTxt){
+            if(c !=null && !c.equals("")) {
+                TextView txtView = new TextView(getActivity());
+                txtView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                        TableRow.LayoutParams.WRAP_CONTENT));
+                txtView.setGravity(Gravity.CENTER);
+                txtView.setTextSize(18);
+                txtView.setPadding(5, 5, 5, 5);
+                txtView.setText(c);
+                txtView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                txtView.setBackground(getResources().getDrawable(R.drawable.table_view_backgrd));
+                tableHeader.addView(txtView);
 
-            TextView txtView = new TextView(getActivity());
-            txtView.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-            txtView.setGravity(Gravity.CENTER);
-            txtView.setTextSize(18);
-            txtView.setPadding(5,5,5,5);
-            txtView.setText(c);
-            tableHeader.addView(txtView);
-
-            final int finalI = i;
-            tableLayout.post(new Runnable(){
-                @Override
-                public void run(){
-                    tableHeader.getChildAt(finalI).setLayoutParams(new TableRow.LayoutParams(firstRow.getChildAt(finalI).getMeasuredWidth(),
-                            firstRow.getChildAt(finalI).getMeasuredHeight()));
-                }
-            });
-            i++;
+                final int finalI = i;
+                tableLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        tableHeader.getChildAt(finalI).setLayoutParams(new TableRow.LayoutParams(firstRow.getChildAt(finalI).getMeasuredWidth(),
+                                firstRow.getChildAt(finalI).getMeasuredHeight()));
+                    }
+                });
+                i++;
+            }
         }
 
         tableHeaderLayout.addView(tableHeader);
@@ -149,93 +167,3 @@ public class DataTableFragment extends Fragment{
 
 
 
-
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DataTableFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DataTableFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-/*
-public class DataTableFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public DataTableFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DataTableFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-/*
-    public static DataTableFragment newInstance(String param1, String param2) {
-        DataTableFragment fragment = new DataTableFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
-
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    /*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
-} */

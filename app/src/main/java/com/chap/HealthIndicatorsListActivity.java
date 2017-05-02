@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HealthIndicatorsListActivity extends AppCompatActivity {
 
@@ -37,6 +38,9 @@ public class HealthIndicatorsListActivity extends AppCompatActivity {
         tableNames = myDB.getTableNames();
         tableNames.remove("android_metadata");
         tableNames.remove("Chart_Type");
+        Collections.sort(tableNames);
+
+        ArrayList<String> formatedTableNames = format(tableNames);
 
         userPref = this.getSharedPreferences("userPref", MODE_PRIVATE);
         editPref = userPref.edit();
@@ -46,13 +50,14 @@ public class HealthIndicatorsListActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         indicatorsList = (ListView) findViewById(R.id.indicators_list);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.content_health_indicators_list, R.id.indicators_textView, tableNames);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.content_health_indicators_list, R.id.indicators_textView, formatedTableNames);
         indicatorsList.setAdapter(arrayAdapter);
 
         indicatorsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedIndicator = (String) (indicatorsList.getItemAtPosition(position));
+               // selectedIndicator = (String) (indicatorsList.getItemAtPosition(position));
+                selectedIndicator = tableNames.get(position).toString();
                 Toast.makeText(HealthIndicatorsListActivity.this, selectedIndicator, Toast.LENGTH_SHORT).show();
                 editPref.putString("currentIndicator", selectedIndicator);
                 editPref.commit();
@@ -67,6 +72,19 @@ public class HealthIndicatorsListActivity extends AppCompatActivity {
             ;
         });
 
+    }
+
+    public ArrayList format(ArrayList tableNames){
+        ArrayList<String> formated = new ArrayList<>();
+
+        String tempString;
+        for (int i = 0; i < tableNames.size(); i++){
+            tempString = tableNames.get(i).toString();
+            tempString = tempString.replace("_", " ");
+            formated.add(tempString.substring(0,1).toUpperCase() + tempString.substring(1));
+        }
+
+        return formated;
     }
 
     public String getActivityData() {

@@ -4,6 +4,7 @@
 
 package com.chap;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -11,6 +12,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 
 import com.google.android.gms.auth.api.Auth;
@@ -114,7 +116,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             editPref.putString("userGooglePlusID", userGooglePlusID);
             editPref.putString("userEmail", userEmail);
             editPref.commit();
-            Toast.makeText(this, getString(R.string.signed_in_fmt, userName), Toast.LENGTH_SHORT).show();
+            Context context = getApplicationContext();
+            CharSequence text = getString(R.string.signed_in_fmt, userName);
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.getView().setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            toast.show();
             loginSuccess(true);
         } else {
             loginSuccess(false);

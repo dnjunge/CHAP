@@ -1,8 +1,10 @@
 package com.chap;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,14 @@ public class ChartViewFragment extends Fragment{
 
         String[] columnHeaders = myDB.getColumnHeaders(currentTable);
 
+        Context context = getActivity();
+        CharSequence text = "Use Two Finger Pinch to Scale the Chart \nVertically or Horizontally";
+        int duration = Toast.LENGTH_LONG;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.getView().setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        toast.show();
 
         switch (chartType){
             case "Bar":
@@ -196,6 +206,7 @@ public class ChartViewFragment extends Fragment{
         createChartLegend();
 
         ArrayList<String> columnData = myDB.getEntriesInCol(DataColumn, Table);
+        ArrayList<String> counties = myDB.getEntriesInCol("County", currentTable);
 
         BarChart barChart = (BarChart)getView().findViewById(R.id.single_bar_chart);
 
@@ -212,6 +223,9 @@ public class ChartViewFragment extends Fragment{
 
         Legend l = barChart.getLegend();
         l.setEnabled(false);
+
+        XAxis xAxis = barChart.getXAxis();
+        xAxis.setValueFormatter(new MyXAxisValueFormatter(counties));
 
         BarDataSet dataset = new BarDataSet(entries, "County Population");
         dataset.setColors(countyColors);
