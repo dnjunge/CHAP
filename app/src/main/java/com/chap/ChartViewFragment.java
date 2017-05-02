@@ -32,7 +32,6 @@ public class ChartViewFragment extends Fragment{
 
     private ArrayList columnContent;
     private DatabaseHelper myDB;
-    //TextView countyList;
     String currentTable;
     int[] countyColors;
     int[] stackedBarColors;

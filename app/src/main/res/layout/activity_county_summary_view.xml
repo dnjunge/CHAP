@@ -5,11 +5,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ListView
-        android:id="@+id/summary_list_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <GridView
+                android:id="@+id/County_Summary_Grid"
+                android:layout_width="match_parent"
+                android:layout_height="184dp" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/Sec_School_Line_chart"
+                android:layout_width="match_parent"
+                android:layout_height="247dp"
+                />
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/immunization_Line_chart"
+                android:layout_width="match_parent"
+                android:layout_height="247dp"
+                />
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

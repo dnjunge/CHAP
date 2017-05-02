@@ -136,5 +136,25 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return record;
     }
 
+    public String getDatabaseRecordwithID(String table, String column, int row){
+        String query;
+        String record = null;
+        SQLiteDatabase countyDB = getReadableDatabase();
+        SQLiteQueryBuilder queryDB = new SQLiteQueryBuilder();
+        //row = String.format("'%s'", row);
+        column = String.format("\"%s\"", column);
+        query = String.format("SELECT %s FROM %s WHERE _id = %s",column, table, row);
+        Cursor c = countyDB.rawQuery(query, null);
+
+        try{
+            c.moveToFirst();
+            record = ( c.getString(0) );
+        }
+        finally {
+            c.close();
+        }
+        return record;
+    }
+
 
 }

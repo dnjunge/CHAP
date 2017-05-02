@@ -21,6 +21,7 @@ public class CountySummaryActivity extends AppCompatActivity {
     ListView countyList;
     String selectedCounty;
     SharedPreferences userPref;
+    int countySelectedPosition;
     public static SharedPreferences.Editor editPref;
 
     @Override
@@ -44,8 +45,10 @@ public class CountySummaryActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedCounty = (String) (countyList.getItemAtPosition(position));
+                countySelectedPosition = position + 1;
                 Toast.makeText(CountySummaryActivity.this, selectedCounty, Toast.LENGTH_SHORT).show();
                 editPref.putString("currentCounty", selectedCounty);
+                editPref.putInt("currentCountyID", countySelectedPosition);
                 editPref.commit();
                 Intent intent = new Intent(CountySummaryActivity.this, CountySummaryViewActivity.class);
                 startActivity(intent);
