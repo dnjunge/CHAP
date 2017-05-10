@@ -185,7 +185,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     @Override
     public void onConnected(Bundle connectionHint) {
         googleLoginButtonClicked = false;
-        Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+       // Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
         // Get user's information
         handleSignInResult();
 
