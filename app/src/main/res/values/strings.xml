@@ -16,5 +16,8 @@
     <string name="table_menu">Table</string>
     <string name="chart_menu">Chart</string>
 
+    <string name="facebook_app_id">451541988559719</string>
+    <string name="fb_login_protocol_scheme">fb451541988559719</string>
+
 
 </resources>

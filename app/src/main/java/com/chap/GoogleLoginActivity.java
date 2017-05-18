@@ -13,9 +13,6 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -32,11 +29,8 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import android.Manifest;
 
 
-import android.widget.ImageView;
 import android.widget.Toast;
 import android.util.Log;
-
-import java.io.InputStream;
 
 
 public class GoogleLoginActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener
@@ -69,7 +63,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_google_login);
+        setContentView(R.layout.activity_wait_for_login);
 
         userPref = this.getSharedPreferences("userProfile", MODE_PRIVATE);
         editPref = userPref.edit();
