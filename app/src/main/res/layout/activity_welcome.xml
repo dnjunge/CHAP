@@ -5,29 +5,36 @@ android:layout_height="match_parent"
 android:background="@drawable/chap_login_screen"
 android:orientation="vertical">
 
-    <Button
-        android:background="@drawable/google_login_button_border"
-        android:id="@+id/googleLoginButton"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/googleLogin_button"
-        android:textColor="@color/googleRed"
-        android:layout_marginBottom="126dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true">
 
-    <Button
-        android:id="@+id/fbLoginButton"
-        android:background="@drawable/facebook_login_button_border"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="@string/fbLogin_button"
-        android:textColor="@color/facebookBlue"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="19dp" />
+        <Button
+            android:background="@drawable/google_login_button_border"
+            android:id="@+id/googleLoginButton"
+            android:drawableLeft="@drawable/google_plus_50"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/googleLogin_button"
+            android:textColor="@color/googleRed"
+            android:layout_above="@+id/fbLoginButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="30dp" />
+
+        <Button
+            android:id="@+id/fbLoginButton"
+            android:background="@drawable/facebook_login_button_border"
+            android:drawableLeft="@drawable/facebook_50"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="@string/fbLogin_button"
+            android:textColor="@color/facebookBlue"
+            android:layout_marginBottom="71dp"/>
+    </LinearLayout>
 
 </RelativeLayout>
 

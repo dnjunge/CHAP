@@ -5,6 +5,7 @@
 package com.chap;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,7 @@ public class SelectOptionActivity extends AppCompatActivity implements OnClickLi
     Button healthIndicatorsButton;
     Button countySummaryButton;
     Button audioSignalsButton;
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,25 @@ public class SelectOptionActivity extends AppCompatActivity implements OnClickLi
             startActivity(intent);
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
 }
