@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.content.Intent;
+import android.view.Window;
 
 // Class to display the splash screen for 3 seconds
 public class SplashScreenActivity extends AppCompatActivity {
@@ -17,14 +18,14 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+       // getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                Intent i = new Intent(SplashScreenActivity.this, WelcomeActivity.class);
                 startActivity(i);
 
                 // close this activity

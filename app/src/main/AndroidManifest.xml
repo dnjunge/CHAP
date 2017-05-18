@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SplashScreenActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +26,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".GoogleLoginActivity"
             android:label=""
             android:screenOrientation="portrait" />
         <activity
@@ -48,7 +49,12 @@
             android:name=".CountySummaryViewActivity"
             android:label=""
             android:screenOrientation="portrait" />
-        <activity android:name=".MyAudioSignalActivity"></activity>
+        <activity android:name=".MyAudioSignalActivity" />
+        <activity android:name=".WelcomeActivity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
+        <activity android:name=".FacebookLoginActivity"></activity>
     </application>
 
 </manifest>

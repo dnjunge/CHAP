@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/chap_login_screen"
+android:orientation="vertical">
+
+    <Button
+        android:background="@drawable/google_login_button_border"
+        android:id="@+id/googleLoginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/googleLogin_button"
+        android:textColor="@color/googleRed"
+        android:layout_marginBottom="126dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/fbLoginButton"
+        android:background="@drawable/facebook_login_button_border"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/fbLogin_button"
+        android:textColor="@color/facebookBlue"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="19dp" />
+
+</RelativeLayout>
+

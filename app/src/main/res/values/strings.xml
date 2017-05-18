@@ -5,6 +5,7 @@
 
     <!-- Strings related to login -->
     <string name="googleLogin_button">Sign in with Google</string>
+    <string name="fbLogin_button">Sign in with Facebook</string>
     <string name="signed_in_fmt">Welcome: %s</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>

@@ -13,17 +13,15 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
-import android.view.View;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,19 +30,22 @@ import com.google.android.gms.plus.model.people.Person;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import android.Manifest;
-import android.content.pm.PackageManager;
 
+
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.util.Log;
 
+import java.io.InputStream;
 
-public class LoginActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener,
-        View.OnClickListener {
+
+public class GoogleLoginActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener
+         {
 
     private GoogleApiClient mGoogleApiClient;
     private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     public static final int RC_SIGN_IN = 9001;
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "GoogleLoginActivity";
     boolean googleLoginIntentInProgress;
     String userName;
     String userPhotoURI;
@@ -61,30 +62,24 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
  * all issues preventing sign-in without waiting.
  */
     private boolean googleLoginButtonClicked = true;
+    public static final String SIGN_IN_METHOD = "google";
+     // Profile pic image size in pixels
+     private static final int PROFILE_PIC_SIZE = 400;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_google_login);
 
         userPref = this.getSharedPreferences("userProfile", MODE_PRIVATE);
         editPref = userPref.edit();
 
-        setContentView(R.layout.activity_login);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-
-/*
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();*/
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN).build();
-        //  .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-        // .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-        findViewById(R.id.googleLoginButton).setOnClickListener(this);
 
     }
     //Ensure login screen is in portrait mode only
@@ -92,15 +87,6 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-    }
-    //Handle a click of the login button
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.googleLoginButton:
-                signInWithGoogle();
-                break;
-        }
     }
 
     public void onStart() {
@@ -135,11 +121,6 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
 
 
 
-
-    private void signInWithGoogle() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
@@ -148,6 +129,8 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
         if (!connectionResult.hasResolution()) {
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this,
                     0).show();
+            editPref.putString("userSignIn", null);
+            editPref.commit();
             return;
         }
         if (!googleLoginIntentInProgress) {
@@ -165,12 +148,9 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            //GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(intent);
-            //handleSignInResult(result);
             if (resultCode != Activity.RESULT_OK) {
                 googleLoginButtonClicked = false;
             }
@@ -185,32 +165,30 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     @Override
     public void onConnected(Bundle connectionHint) {
         googleLoginButtonClicked = false;
-       // Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
         // Get user's information
         handleSignInResult();
 
-
-        // Update the UI after signin
-        //updateUI(true);
     }
 
     @Override
-    public void onConnectionSuspended(int cause) {
-
+    public void onConnectionSuspended(int arg0) {
+        mGoogleApiClient.connect();
     }
 
     //sign-in was successful
     private void handleSignInResult() {
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
-
+         if (ContextCompat.checkSelfPermission(this,
+               Manifest.permission.READ_CONTACTS)
+               != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_CONTACTS},
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
 
             }
+        else{
+             //permission already granted
+             loginSuccess();
+         }
     }
 
 
@@ -218,6 +196,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.
@@ -230,15 +209,21 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
                                     .getCurrentPerson(mGoogleApiClient);
 
                             //Get user info
+                            editPref.putString("userSignIn", SIGN_IN_METHOD);
                             userName =  currentPerson.getDisplayName();
-                            //  userPhotoURI = currentPerson.getImage().getUrl().toString();
-                            //  userGooglePlusID = currentPerson.getUrl();
-                            //   final String userEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
-                            // Store user info into shared pref
+                            userPhotoURI = currentPerson.getImage().getUrl();
+                            userGooglePlusID = currentPerson.getUrl();
+                            final String userEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
+                            userPhotoURI = userPhotoURI.substring(0,
+                                    userPhotoURI.length() - 2)
+                                    + PROFILE_PIC_SIZE;
+
+                            //Store user info into shared pref
                             editPref.putString("userName", userName);
-                            // editPref.putString("userPhotoURI", userPhotoURI);
-                            // editPref.putString("userGooglePlusID", userGooglePlusID);
-                            // editPref.putString("userEmail", userEmail);
+                            editPref.putString("userPhotoURI", userPhotoURI);
+                            editPref.putString("userGooglePlusID", userGooglePlusID);
+                            editPref.putString("userEmail", userEmail);
                             editPref.commit();
                             Context context = getApplicationContext();
                             CharSequence text = getString(R.string.signed_in_fmt, userName);
@@ -261,46 +246,10 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
 
                     loginSuccess();
                 }
-                return;
             }
 
         }
     }
-
-
-
-    /*
-    //Check if sign-in was successful
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            GoogleSignInAccount acct = result.getSignInAccount();
-
-            //Get user info
-            userName = acct.getDisplayName();
-            userPhotoURI = acct.getPhotoUrl().toString();
-            userGooglePlusID = acct.getId();
-            userEmail = acct.getEmail();
-            // Store user info into shared pref
-            editPref.putString("userName", userName);
-            editPref.putString("userPhotoURI", userPhotoURI);
-            editPref.putString("userGooglePlusID", userGooglePlusID);
-            editPref.putString("userEmail", userEmail);
-            editPref.commit();
-            Context context = getApplicationContext();
-            CharSequence text = getString(R.string.signed_in_fmt, userName);
-            int duration = Toast.LENGTH_SHORT;
-            Toast toast = Toast.makeText(context, text, duration);
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.getView().setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            toast.show();
-            loginSuccess(true);
-        } else {
-            loginSuccess(false);
-        }
-    } */
-
-
 
         private void loginSuccess()
     {
@@ -308,20 +257,7 @@ public class LoginActivity extends AppCompatActivity implements ConnectionCallba
         startActivity(intent);
         finish();
     }
-    /*
-    private void loginSuccess(boolean loggedIn)
-    {
-        if(loggedIn){
-            Intent intent = new Intent(this, SelectOptionActivity.class);
-            startActivity(intent);
-            finish();
-        }
-        else{
-            Toast.makeText(this, "There was a problem signing in.", Toast.LENGTH_SHORT).show();
-            findViewById(R.id.googleLoginButton).setVisibility(View.VISIBLE);
-        }
 
-    }*/
 
 }
 
