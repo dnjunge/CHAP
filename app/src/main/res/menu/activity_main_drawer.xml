@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_country_overview"
+            android:icon="@drawable/ic_menu_country_overview"
+            android:title="Country Overview" />
+        <item
+            android:id="@+id/nav_county_overview"
+            android:icon="@drawable/ic_menu_county_overview"
+            android:title="County Overview" />
+        <item
+            android:id="@+id/nav_pop_health_indicators"
+            android:icon="@drawable/ic_menu_pop_health_indicators"
+            android:title="Population Health Indicators" />
+        <item
+            android:id="@+id/nav_analytics"
+            android:icon="@drawable/ic_menu_analytics"
+            android:title="Analytics" />
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_menu_notifications"
+            android:title="Notifications" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="Settings" />
+    </group>
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:title="@string/nav_about" />
+            <item
+                android:id="@+id/nav_privacy_policy"
+                android:title="@string/privacy_policy" />
+        </menu>
+    </item>
+
+</menu>

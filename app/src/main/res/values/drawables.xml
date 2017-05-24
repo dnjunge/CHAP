@@ -1,0 +1,8 @@
+<resources >
+    <item name="ic_menu_country_overview" type="drawable">@drawable/ic_map_black_24dp</item>
+    <item name="ic_menu_county_overview" type="drawable">@drawable/ic_streetview_black_24dp</item>
+    <item name="ic_menu_pop_health_indicators" type="drawable">@drawable/ic_people_black_24dp</item>
+    <item name="ic_menu_analytics" type="drawable">@drawable/ic_poll_black_24dp</item>
+    <item name="ic_menu_notifications" type="drawable">@drawable/ic_notifications_black_24dp</item>
+    <item name="ic_menu_settings" type="drawable">@drawable/ic_settings_black_24dp</item>
+</resources>
