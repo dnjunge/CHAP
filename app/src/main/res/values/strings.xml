@@ -62,9 +62,9 @@
         <item>Human Development Index</item>
         <item>Physicians Density</item>
         <item>Tuberculosis Prevalence</item>
-        <item>2006 Percent Poverty Rate</item>
+        <item>Percent Poverty Rate</item>
         <item>Access To Electricity Rate</item>
-        <item>Gender Equality Index</item>
+        <item>Gender Inequality Index</item>
     </string-array>
 
 
