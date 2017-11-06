@@ -84,7 +84,7 @@ public class ChartViewFragment extends Fragment{
 
         Context context = getActivity();
         CharSequence text = "Use Two Finger Pinch to Scale the Chart \nVertically or Horizontally";
-        int duration = Toast.LENGTH_LONG;
+        int duration = Toast.LENGTH_SHORT;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);

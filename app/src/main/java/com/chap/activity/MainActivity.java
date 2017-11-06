@@ -33,6 +33,8 @@ import com.chap.fragment.NotificationsFragment;
 import com.chap.fragment.SettingsFragment;
 import com.chap.other.CircleTransform;
 
+import java.io.File;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AnalyticsFragment.OnFragmentInteractionListener,
 CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
@@ -47,8 +49,6 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
 
     // urls to load navigation header background image
     // and profile image
-    Uri uri=Uri.parse("R.drawable.nav_menu_header_bg");
-    String uriNavHeaderBg = uri.toString();
     String urlProfileImg;
 
     // index to identify current nav menu item
@@ -121,7 +121,7 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
         txtName.setText(userPref.getString("userName", null));
 
         // loading header background image
-        Glide.with(this).load(uriNavHeaderBg)
+        Glide.with(this).load(R.drawable.nav_menu_header_bg)
                 .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgNavHeaderBg);

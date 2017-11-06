@@ -6,12 +6,24 @@ android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context="com.chap.fragment.CountryOverviewFragment">
 
-<Spinner
-    android:id="@+id/map_indicator_spinner"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:entries="@array/map_indicator_array"
-    android:prompt="@string/county_map_indicator_prompt" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/county_map_indicator_prompt"
+        android:layout_marginLeft="9dp"
+        android:layout_marginStart="9dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:id="@+id/map_indicator_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:entries="@array/map_indicator_array"
+        android:prompt="@string/county_map_indicator_prompt" />
 
 <WebView
     android:id="@+id/map_webview"

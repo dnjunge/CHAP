@@ -13,18 +13,18 @@
 
         <ListView
             android:id="@+id/indicators_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:divider="#f00"
-            android:dividerHeight="1dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:divider="#fbe7e7"
+            android:dividerHeight="1dp" />
 
         <TextView
             android:id="@+id/indicators_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="left|center"
             android:padding="@dimen/activity_horizontal_margin"
-            android:textColor="#303F9F" />
+            android:textColor="#000000" />
     </LinearLayout>
 
 
