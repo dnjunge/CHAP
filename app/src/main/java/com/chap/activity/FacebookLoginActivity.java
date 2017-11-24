@@ -1,5 +1,6 @@
 package com.chap.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import com.chap.R;
@@ -85,7 +87,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
         @Override
         public void onSuccess(LoginResult loginResult) {
             Log.d("Success", "Login");
-            editPref.putString("userSignIn", SIGN_IN_METHOD);
+
            // AccessToken accessToken = loginResult.getAccessToken();
            // Profile profile = Profile.getCurrentProfile();
 
@@ -106,7 +108,14 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
                                 String PictureURL= object.getJSONObject("picture").getJSONObject("data").getString("url");
                                 Log.v("Email = ", " " + Email);
-                                Toast.makeText(getApplicationContext(), "Name " + Name, Toast.LENGTH_LONG).show();
+
+                                Context context = getApplicationContext();
+                                CharSequence text = getString(R.string.signed_in_fmt, Name);
+                                int duration = Toast.LENGTH_SHORT;
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+                                toast.getView().setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                                toast.show();
 
                                 editPref.putString("userName", Name);
                                 editPref.putString("userEmail", Email);
@@ -130,6 +139,11 @@ public class FacebookLoginActivity extends AppCompatActivity {
         public void onCancel() {
             Toast.makeText(getApplicationContext(), "Login Cancel", Toast.LENGTH_LONG).show();
             LoginManager.getInstance().logOut();
+            editPref.putString("userSignIn", null);
+            editPref.commit();
+            Intent intent = new Intent(getApplicationContext(), SplashScreenActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         @Override
@@ -140,6 +154,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
     private void loginSuccess()
     {
+        editPref.putString("userSignIn", SIGN_IN_METHOD);
+        editPref.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

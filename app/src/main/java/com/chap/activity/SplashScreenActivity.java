@@ -25,7 +25,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // This method will be executed once the timer is over
-                // Start your app main activity
+                // Start your app menu_main activity
                 Intent i = new Intent(SplashScreenActivity.this, WelcomeActivity.class);
                 startActivity(i);
 

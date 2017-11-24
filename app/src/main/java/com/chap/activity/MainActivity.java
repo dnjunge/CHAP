@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -32,13 +30,20 @@ import com.chap.fragment.HealthIndicatorsListFragment;
 import com.chap.fragment.NotificationsFragment;
 import com.chap.fragment.SettingsFragment;
 import com.chap.other.CircleTransform;
-
-import java.io.File;
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.tasks.OnCompleteListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, AnalyticsFragment.OnFragmentInteractionListener,
 CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnFragmentInteractionListener, SettingsFragment.OnFragmentInteractionListener{
 
+    private GoogleApiClient mGoogleApiClient;
     SharedPreferences userPref;
     private NavigationView navigationView;
     private DrawerLayout drawer;
@@ -49,17 +54,17 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
 
     // urls to load navigation header background image
     // and profile image
-    String urlProfileImg;
+    String urlProfileImg, userSignInMethod;
 
     // index to identify current nav menu item
     public static int navItemIndex = 0;
 
     // tags used to attach the fragments
-    private static final String TAG_COUNTRY_OVERVIEW = "country_overview";
+    private static final String TAG_COUNTRY_OVERVIEW = "menu_country_overview";
     private static final String TAG_COUNTY_OVERVIEW = "county_overview";
     private static final String TAG_POP_HEALTH = "pop_health_indicators";
     private static final String TAG_ANALYTICS = "analytics";
-    private static final String TAG_NOTIFICATIONS = "notifications";
+    private static final String TAG_NOTIFICATIONS = "menu_notifications";
     private static final String TAG_SETTINGS = "settings";
     public static String CURRENT_TAG = TAG_COUNTRY_OVERVIEW;
 
@@ -69,6 +74,7 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
+    public static SharedPreferences.Editor editPref;
 
 
 
@@ -78,6 +84,8 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
         setContentView(R.layout.activity_main);
         userPref = this.getSharedPreferences("userProfile", MODE_PRIVATE);
         urlProfileImg = userPref.getString("userPhotoURI", null);
+        userSignInMethod = userPref.getString("userSignIn", null);
+        editPref = userPref.edit();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -111,10 +119,21 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
 
     }
 
+    @Override
+    protected void onStart(){
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+              //  .requestEmail()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
     /***
      * Load navigation menu header information
      * like background image, profile image
-     * name, website, notifications action view (dot)
+     * name, website, menu_notifications action view (dot)
      */
     private void loadNavHeader() {
         // name, website
@@ -134,8 +153,8 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgProfile);
 
-        // showing dot next to notifications label
-        navigationView.getMenu().getItem(4).setActionView(R.layout.menu_dot);
+        // showing dot next to menu_notifications label
+       // navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
     }
 
 
@@ -165,7 +184,7 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
         Runnable mPendingRunnable = new Runnable() {
             @Override
             public void run() {
-                // update the main content by replacing fragments
+                // update the menu_main content by replacing fragments
                 Fragment fragment = getHomeFragment();
                 FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
@@ -202,17 +221,17 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
                 HealthIndicatorsListFragment healthIndicatorsListFragment = new HealthIndicatorsListFragment();
                 return healthIndicatorsListFragment;
             case 3:
+                // menu_notifications fragment
+                NotificationsFragment notificationsFragment = new NotificationsFragment();
+                return notificationsFragment;
+  /**          case 4:
                 // analyticsFragment
                 AnalyticsFragment analyticsFragment = new AnalyticsFragment();
                 return analyticsFragment;
-            case 4:
-                // notifications fragment
-                NotificationsFragment notificationsFragment = new NotificationsFragment();
-                return notificationsFragment;
             case 5:
                 // settingsFragment
                 SettingsFragment settingsFragment = new SettingsFragment();
-                return settingsFragment;
+                return settingsFragment; **/
             default:
                 return new CountryOverviewFragment();
         }
@@ -237,7 +256,7 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()) {
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
+                    //Replacing the menu_main content with ContentFragment Which is our Inbox View;
                     case R.id.nav_country_overview:
                         navItemIndex = 0;
                         CURRENT_TAG = TAG_COUNTRY_OVERVIEW;
@@ -250,18 +269,18 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
                         navItemIndex = 2;
                         CURRENT_TAG = TAG_POP_HEALTH;
                         break;
-                    case R.id.nav_analytics:
-                        navItemIndex = 3;
-                        CURRENT_TAG = TAG_ANALYTICS;
-                        break;
                     case R.id.nav_notifications:
-                        navItemIndex = 4;
+                        navItemIndex = 3;
                         CURRENT_TAG = TAG_NOTIFICATIONS;
+                        break;
+           /**         case R.id.nav_analytics:
+                        navItemIndex = 4;
+                        CURRENT_TAG = TAG_ANALYTICS;
                         break;
                     case R.id.nav_settings:
                         navItemIndex = 5;
                         CURRENT_TAG = TAG_SETTINGS;
-                        break;
+                        break; **/
                     case R.id.nav_about:
                         // launch new intent instead of loading fragment
                         startActivity(new Intent(MainActivity.this, AboutActivity.class));
@@ -340,15 +359,35 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 
-        // show menu only when home fragment is selected
+        // show menu only when home fragment is selected load the menu created for menu_country_overview
         if (navItemIndex == 0) {
-            getMenuInflater().inflate(R.menu.main, menu);
+            getMenuInflater().inflate(R.menu.menu_country_overview, menu);
         }
 
-        // when fragment is notifications, load the menu created for notifications
-        if (navItemIndex == 3) {
-            getMenuInflater().inflate(R.menu.notifications, menu);
+        // when fragment is CountyOverview, load the menu created for menu_county_overview
+        if (navItemIndex == 1) {
+            getMenuInflater().inflate(R.menu.menu_county_overview, menu);
         }
+
+        // when fragment is HealthIndicatorsListFragment, load the menu created for menu_population_health_indicators
+        if (navItemIndex == 2) {
+            getMenuInflater().inflate(R.menu.menu_population_health_indicators_list, menu);
+        }
+
+        // when fragment is Notifications, load the menu created for menu_notifications
+        if (navItemIndex == 3) {
+            getMenuInflater().inflate(R.menu.menu_notifications, menu);
+        }
+/**
+        // when fragment is Analytics, load the menu created for menu_analytics
+        if (navItemIndex == 4) {
+            getMenuInflater().inflate(R.menu.menu_analytics, menu);
+        }
+
+        // when fragment is Settings, load the menu created for menu_settings
+        if (navItemIndex == 5) {
+            getMenuInflater().inflate(R.menu.menu_settings, menu);
+        } **/
         return true;
     }
 
@@ -362,20 +401,39 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
-            Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
+
+            if(userSignInMethod.contentEquals("google")){
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                        new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                // ...
+
+                            }
+                        });
+            }
+            else {
+                LoginManager.getInstance().logOut();
+            }
+            Toast.makeText(getApplicationContext(),"Logged Out",Toast.LENGTH_SHORT).show();
+            editPref.putString("userSignIn", null);
+            editPref.commit();
+            Intent i=new Intent(getApplicationContext(),SplashScreenActivity.class);
+            startActivity(i);
+            finish();
             return true;
         }
 
-        // user is in notifications fragment
+        // user is in menu_notifications fragment
         // and selected 'Mark all as Read'
         if (id == R.id.action_mark_all_read) {
-            Toast.makeText(getApplicationContext(), "All notifications marked as read!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "All menu_notifications marked as read!", Toast.LENGTH_LONG).show();
         }
 
-        // user is in notifications fragment
+        // user is in menu_notifications fragment
         // and selected 'Clear All'
         if (id == R.id.action_clear_notifications) {
-            Toast.makeText(getApplicationContext(), "Clear all notifications!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Clear all menu_notifications!", Toast.LENGTH_LONG).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -393,11 +451,11 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
 
         } else if (id == R.id.nav_pop_health_indicators) {
 
-        } else if (id == R.id.nav_analytics) {
+      //  } else if (id == R.id.nav_analytics) {
 
         } else if (id == R.id.nav_notifications) {
 
-        } else if (id == R.id.nav_settings) {
+      //  } else if (id == R.id.nav_settings) {
 
         }
 

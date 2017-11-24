@@ -204,7 +204,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
                                     .getCurrentPerson(mGoogleApiClient);
 
                             //Get user info
-                            editPref.putString("userSignIn", SIGN_IN_METHOD);
+
                             userName =  currentPerson.getDisplayName();
                             userPhotoURI = currentPerson.getImage().getUrl();
                             userGooglePlusID = currentPerson.getUrl();
@@ -248,6 +248,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
 
         private void loginSuccess()
     {
+        editPref.putString("userSignIn", SIGN_IN_METHOD);
+        editPref.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
