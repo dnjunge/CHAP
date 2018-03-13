@@ -286,11 +286,11 @@ CountryOverviewFragment.OnFragmentInteractionListener, NotificationsFragment.OnF
                         startActivity(new Intent(MainActivity.this, AboutActivity.class));
                         drawer.closeDrawers();
                         return true;
-                    case R.id.nav_privacy_policy:
+                   /** case R.id.nav_privacy_policy:
                         // launch new intent instead of loading fragment
                         startActivity(new Intent(MainActivity.this, PrivacyPolicyActivity.class));
                         drawer.closeDrawers();
-                        return true;
+                        return true; **/
                     default:
                         navItemIndex = 0;
                 }

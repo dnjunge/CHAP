@@ -38,7 +38,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
          {
 
     private GoogleApiClient mGoogleApiClient;
-    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+    private static final int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 1;
     public static final int RC_SIGN_IN = 9001;
     private static final String TAG = "GoogleLoginActivity";
     boolean googleLoginIntentInProgress;
@@ -173,11 +173,11 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
     //sign-in was successful
     private void handleSignInResult() {
          if (ContextCompat.checkSelfPermission(this,
-               Manifest.permission.READ_CONTACTS)
+               Manifest.permission.GET_ACCOUNTS)
                != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_CONTACTS},
-                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+                        new String[]{Manifest.permission.GET_ACCOUNTS},
+                        MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
 
             }
         else{
@@ -193,7 +193,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
                                            String permissions[], int[] grantResults) {
 
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
+            case MY_PERMISSIONS_REQUEST_GET_ACCOUNTS: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
