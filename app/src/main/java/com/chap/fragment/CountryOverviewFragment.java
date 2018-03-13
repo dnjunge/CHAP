@@ -44,6 +44,7 @@ public class CountryOverviewFragment extends Fragment {
 
         mapVIEW = (WebView)view.findViewById(R.id.map_webview);
         mapVIEW.getSettings().setJavaScriptEnabled(true);
+        mapVIEW.clearCache(true);
        // mapVIEW.loadUrl("http://www.kenyachap.info/population.html");
 
         mapSelectSpinner = (Spinner) view.findViewById(R.id.map_indicator_spinner);
@@ -51,6 +52,7 @@ public class CountryOverviewFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String  selectedIndicator = parent.getItemAtPosition(position).toString();
+               // mapVIEW.loadUrl("javascript:window.location.reload( true )");
                 switch (selectedIndicator){
                     case "Population":
                         mapVIEW.loadUrl("http://www.kenyachap.info/population.html");

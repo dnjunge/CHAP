@@ -71,7 +71,8 @@
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_country_overview"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.AboutActivity"
+            android:label="@string/title_activity_about"/>
         <activity android:name=".activity.PrivacyPolicyActivity" />
     </application>
 
