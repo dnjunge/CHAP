@@ -2,20 +2,30 @@ apply plugin: 'com.android.application'
 
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'chapandroidkey'
+            keyPassword 'jbm5js4g'
+            storeFile file('H:/Keystore/CHAP_Key.jks')
+            storePassword 'jbm5js4g'
+        }
+    }
     compileSdkVersion 27
     buildToolsVersion '27.0.2'
     defaultConfig {
         applicationId "com.chap"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable false
+            signingConfig signingConfigs.config
         }
     }
 }
@@ -40,7 +50,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.medyo:android-about-page:1.2.3'
     compile('com.mapbox.mapboxsdk:mapbox-android-sdk:5.0.2@aar') {
-        transitive=true
+        transitive = true
     }
     testCompile 'junit:junit:4.12'
 }

@@ -34,11 +34,21 @@ import android.widget.Toast;
 import android.util.Log;
 
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+
 public class GoogleLoginActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener
          {
 
     private GoogleApiClient mGoogleApiClient;
-    private static final int MY_PERMISSIONS_REQUEST_GET_ACCOUNTS = 1;
+    private static final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
     public static final int RC_SIGN_IN = 9001;
     private static final String TAG = "GoogleLoginActivity";
     boolean googleLoginIntentInProgress;
@@ -70,11 +80,14 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
         editPref = userPref.edit();
 
 
-
+        Toast.makeText(this,
+                "Pre google client", Toast.LENGTH_SHORT).show();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).build();
+                .addOnConnectionFailedListener(this)
+                .addApi(Plus.API)
+                .addScope(Plus.SCOPE_PLUS_LOGIN)
+                .build();
 
     }
     //Ensure login screen is in portrait mode only
@@ -86,12 +99,16 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
 
     public void onStart() {
         super.onStart();
+        Toast.makeText(this,
+                "onStart", Toast.LENGTH_SHORT).show();
         mGoogleApiClient.connect();
     }
 
     public void onStop() {
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
+            Toast.makeText(this,
+                    "onStop pre disconnect", Toast.LENGTH_SHORT).show();
             mGoogleApiClient.disconnect();
         }
     }
@@ -102,6 +119,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
             Toast.makeText(this, "googleLoginConnectionResult null!", Toast.LENGTH_LONG).show();
         }
         if (googleLoginConnectionResult.hasResolution()) {
+            Toast.makeText(this,
+                    "resolveSignInError has resolution", Toast.LENGTH_SHORT).show();
             try {
                 googleLoginIntentInProgress = true;
                 googleLoginConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
@@ -121,7 +140,11 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
+        Toast.makeText(this,
+                "onConnectionFailed:" + connectionResult, Toast.LENGTH_SHORT).show();
         if (!connectionResult.hasResolution()) {
+            Toast.makeText(this,
+                    "onConnectionFailed: no resolution", Toast.LENGTH_SHORT).show();
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this,
                     0).show();
             editPref.putString("userSignIn", null);
@@ -136,13 +159,22 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
             if (googleLoginButtonClicked) {
                 // The user has already clicked 'sign-in' so we attempt to resolve all
                 // errors until the user is signed in, or they cancel.
+                Toast.makeText(this,
+                        "onConnectionFailed: pre resolveSignInError", Toast.LENGTH_SHORT).show();
                 resolveSignInError();
+            }
+            else{
+                Log.e(TAG, connectionResult.toString());
+                Toast.makeText(this,
+                        "onConnectionFailed new else: "+ connectionResult.toString(), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Toast.makeText(this,
+                "onActivityResult", Toast.LENGTH_SHORT).show();
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -159,6 +191,9 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
 
     @Override
     public void onConnected(Bundle connectionHint) {
+        Toast.makeText(this,
+                "onConnected" + connectionHint, Toast.LENGTH_SHORT).show();
+
         googleLoginButtonClicked = false;
         // Get user's information
         handleSignInResult();
@@ -172,16 +207,22 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
 
     //sign-in was successful
     private void handleSignInResult() {
-         if (ContextCompat.checkSelfPermission(this,
-               Manifest.permission.GET_ACCOUNTS)
+        Toast.makeText(this,
+                "handleSignInResult", Toast.LENGTH_SHORT).show();
+        if (ContextCompat.checkSelfPermission(this,
+               Manifest.permission.READ_CONTACTS)
                != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this,
+                    "handleSignInResult check permission READ_CONTACTS", Toast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.GET_ACCOUNTS},
-                        MY_PERMISSIONS_REQUEST_GET_ACCOUNTS);
+                        new String[]{Manifest.permission.READ_CONTACTS},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
 
             }
         else{
              //permission already granted
+            Toast.makeText(this,
+                    "handleSignInResult permission already granted READ_CONTACTS", Toast.LENGTH_SHORT).show();
              loginSuccess();
          }
     }
@@ -191,9 +232,11 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        Toast.makeText(this,
+                "onRequestPermissionsResult get user details", Toast.LENGTH_SHORT).show();
 
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_GET_ACCOUNTS: {
+            case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
