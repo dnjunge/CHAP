@@ -16,8 +16,8 @@ android {
         applicationId "com.chap"
         minSdkVersion 16
         targetSdkVersion 27
-        versionCode 5
-        versionName "1.4"
+        versionCode 13
+        versionName "2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -25,6 +25,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable false
+            signingConfig signingConfigs.config
+        }
+        debug {
             signingConfig signingConfigs.config
         }
     }
@@ -54,6 +57,7 @@ dependencies {
     }
     testCompile 'junit:junit:4.12'
 }
+
 
 
 

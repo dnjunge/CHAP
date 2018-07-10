@@ -13,6 +13,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -20,8 +21,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 
 import com.chap.R;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -42,6 +47,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.io.IOException;
 
 
 public class GoogleLoginActivity extends AppCompatActivity implements ConnectionCallbacks, OnConnectionFailedListener
@@ -80,8 +87,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
         editPref = userPref.edit();
 
 
-        Toast.makeText(this,
-                "Pre google client", Toast.LENGTH_SHORT).show();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -99,16 +105,12 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
 
     public void onStart() {
         super.onStart();
-        Toast.makeText(this,
-                "onStart", Toast.LENGTH_SHORT).show();
         mGoogleApiClient.connect();
     }
 
     public void onStop() {
         super.onStop();
         if (mGoogleApiClient.isConnected()) {
-            Toast.makeText(this,
-                    "onStop pre disconnect", Toast.LENGTH_SHORT).show();
             mGoogleApiClient.disconnect();
         }
     }
@@ -116,11 +118,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
     /* A helper method to resolve the current ConnectionResult error. */
     private void resolveSignInError() {
         if (googleLoginConnectionResult == null){
-            Toast.makeText(this, "googleLoginConnectionResult null!", Toast.LENGTH_LONG).show();
         }
         if (googleLoginConnectionResult.hasResolution()) {
-            Toast.makeText(this,
-                    "resolveSignInError has resolution", Toast.LENGTH_SHORT).show();
             try {
                 googleLoginIntentInProgress = true;
                 googleLoginConnectionResult.startResolutionForResult(this, RC_SIGN_IN);
@@ -140,11 +139,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this,
-                "onConnectionFailed:" + connectionResult, Toast.LENGTH_SHORT).show();
         if (!connectionResult.hasResolution()) {
-            Toast.makeText(this,
-                    "onConnectionFailed: no resolution", Toast.LENGTH_SHORT).show();
             GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this,
                     0).show();
             editPref.putString("userSignIn", null);
@@ -159,22 +154,22 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
             if (googleLoginButtonClicked) {
                 // The user has already clicked 'sign-in' so we attempt to resolve all
                 // errors until the user is signed in, or they cancel.
-                Toast.makeText(this,
-                        "onConnectionFailed: pre resolveSignInError", Toast.LENGTH_SHORT).show();
                 resolveSignInError();
             }
             else{
                 Log.e(TAG, connectionResult.toString());
-                Toast.makeText(this,
-                        "onConnectionFailed new else: "+ connectionResult.toString(), Toast.LENGTH_SHORT).show();
+                loginSuccess();
             }
         }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        Toast.makeText(this,
-                "onActivityResult", Toast.LENGTH_SHORT).show();
+        Log.d(TAG, "CHAP: Result Code: " + resultCode);
+        Log.d(TAG, "CHAP: Request Code: " + requestCode);
+        Log.d(TAG, "CHAP: RC_SIGN_IN: " + RC_SIGN_IN);
+        Log.d(TAG, "CHAP: Activity.RESULT_OK: " + Activity.RESULT_OK);
+        Log.d(TAG, "CHAP: top googleLoginButtonClicked: " + googleLoginButtonClicked);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
@@ -187,13 +182,11 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
                 mGoogleApiClient.connect();
             }
         }
-    }
+        Log.d(TAG, "CHAP: bottom googleLoginButtonClicked: " + googleLoginButtonClicked);
+     }
 
     @Override
     public void onConnected(Bundle connectionHint) {
-        Toast.makeText(this,
-                "onConnected" + connectionHint, Toast.LENGTH_SHORT).show();
-
         googleLoginButtonClicked = false;
         // Get user's information
         handleSignInResult();
@@ -207,13 +200,9 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
 
     //sign-in was successful
     private void handleSignInResult() {
-        Toast.makeText(this,
-                "handleSignInResult", Toast.LENGTH_SHORT).show();
         if (ContextCompat.checkSelfPermission(this,
                Manifest.permission.READ_CONTACTS)
                != PackageManager.PERMISSION_GRANTED) {
-            Toast.makeText(this,
-                    "handleSignInResult check permission READ_CONTACTS", Toast.LENGTH_SHORT).show();
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.READ_CONTACTS},
                         MY_PERMISSIONS_REQUEST_READ_CONTACTS);
@@ -221,37 +210,29 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
             }
         else{
              //permission already granted
-            Toast.makeText(this,
-                    "handleSignInResult permission already granted READ_CONTACTS", Toast.LENGTH_SHORT).show();
              loginSuccess();
          }
     }
 
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        Toast.makeText(this,
-                "onRequestPermissionsResult get user details", Toast.LENGTH_SHORT).show();
-
-        switch (requestCode) {
+          switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_CONTACTS: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     try {
+
                         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null)  {
                             Person currentPerson = Plus.PeopleApi
                                     .getCurrentPerson(mGoogleApiClient);
 
-                            //Get user info
-
                             userName =  currentPerson.getDisplayName();
                             userPhotoURI = currentPerson.getImage().getUrl();
                             userGooglePlusID = currentPerson.getUrl();
-                            final String userEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
+                        //    final String userEmail = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
                             userPhotoURI = userPhotoURI.substring(0,
                                     userPhotoURI.length() - 2)
@@ -261,7 +242,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
                             editPref.putString("userName", userName);
                             editPref.putString("userPhotoURI", userPhotoURI);
                             editPref.putString("userGooglePlusID", userGooglePlusID);
-                            editPref.putString("userEmail", userEmail);
+                           // editPref.putString("userEmail", userEmail);
                             editPref.commit();
                             Context context = getApplicationContext();
                             CharSequence text = getString(R.string.signed_in_fmt, userName);
@@ -273,31 +254,27 @@ public class GoogleLoginActivity extends AppCompatActivity implements Connection
                             loginSuccess();
 
                         } else {
-                            Toast.makeText(this,
-                                    "Person information is null", Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "CHAP: Person information is null ");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                 } else {
-
                     loginSuccess();
                 }
             }
 
         }
+
     }
 
-        private void loginSuccess()
-    {
+        private void loginSuccess(){
         editPref.putString("userSignIn", SIGN_IN_METHOD);
         editPref.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();
     }
-
-
 }
 

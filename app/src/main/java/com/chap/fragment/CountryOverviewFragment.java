@@ -45,7 +45,7 @@ public class CountryOverviewFragment extends Fragment {
         mapVIEW = (WebView)view.findViewById(R.id.map_webview);
         mapVIEW.getSettings().setJavaScriptEnabled(true);
         mapVIEW.clearCache(true);
-       // mapVIEW.loadUrl("http://www.kenyachap.info/population.html");
+       // mapVIEW.loadUrl("http://www.kenyachap.com/population.html");
 
         mapSelectSpinner = (Spinner) view.findViewById(R.id.map_indicator_spinner);
         mapSelectSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
@@ -55,31 +55,31 @@ public class CountryOverviewFragment extends Fragment {
                // mapVIEW.loadUrl("javascript:window.location.reload( true )");
                 switch (selectedIndicator){
                     case "Population":
-                        mapVIEW.loadUrl("http://www.kenyachap.info/population.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/population.html");
                         break;
                     case "Health Spending Per Person":
-                        mapVIEW.loadUrl("http://www.kenyachap.info/health_spending.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/health_spending.html");
                         break;
                     case "Human Development Index":
-                        mapVIEW.loadUrl("http://www.kenyachap.info/human_development_index.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/human_development_index.html");
                         break;
                     case "Physicians Density":
-                        mapVIEW.loadUrl("http://www.kenyachap.info/physician_density.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/physician_density.html");
                         break;
                     case "Tuberculosis Prevalence":
-                        mapVIEW.loadUrl("http://www.kenyachap.info/tuberculosis_prevalence.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/tuberculosis_prevalence.html");
                         break;
                     case "Percent Poverty Rate":
-                        mapVIEW.loadUrl("http://www.kenyachap.info/percent_poverty_rate.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/percent_poverty_rate.html");
                         break;
                     case "Access To Electricity Rate":
-                        mapVIEW.loadUrl("http://www.kenyachap.info/access_to_electricity_rate.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/access_to_electricity_rate.html");
                         break;
                     case "Gender Inequality Index":
-                        mapVIEW.loadUrl("http://www.kenyachap.info/gender_inequality_index.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/gender_inequality_index.html");
                         break;
                     default:
-                        mapVIEW.loadUrl("http://www.kenyachap.info/population.html");
+                        mapVIEW.loadUrl("http://www.kenyachap.com/population.html");
                 }
 
                 Toast.makeText(getActivity(), selectedIndicator, Toast.LENGTH_SHORT).show();

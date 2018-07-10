@@ -21,7 +21,7 @@ public class AboutActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_about);
 
         Element versionElement = new Element();
-        versionElement.setTitle("Version 1.4");
+        versionElement.setTitle("Version 2.1");
 
 
         View aboutPage = new AboutPage(this)

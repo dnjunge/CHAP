@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "78923074229",
-    "project_id": "firebase-chap"
+    "firebase_url": "https://fir-chap-87bf2.firebaseio.com",
+    "project_id": "firebase-chap",
+    "storage_bucket": "firebase-chap.appspot.com"
   },
   "client": [
     {
@@ -12,6 +14,18 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "78923074229-gduqui3j7dismgd87rp5bvidrclc7nb8.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "78923074229-l88l9cnbh6plb51pdtepc62veosf18j6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chap",
+            "certificate_hash": "970fd3de2f59879c83232b1b03efb172bb38bcb8"
+          }
+        },
         {
           "client_id": "78923074229-v0i7lio9ts28shigp4chfs2haerflrb6.apps.googleusercontent.com",
           "client_type": 1,
@@ -35,11 +49,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "78923074229-gduqui3j7dismgd87rp5bvidrclc7nb8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
