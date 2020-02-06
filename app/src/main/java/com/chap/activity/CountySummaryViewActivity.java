@@ -1,16 +1,10 @@
 package com.chap.activity;
 
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.DataSetObserver;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,7 +13,6 @@ import com.chap.R;
 import com.chap.other.DatabaseHelper;
 import com.chap.other.MyXAxisValueFormatter;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;

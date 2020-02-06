@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
@@ -35,7 +35,7 @@ public class FacebookLoginActivity extends AppCompatActivity {
     private CallbackManager mCallbackManager;
 
     String userName;
-    String userPhoto;
+    String userPictureURL;
     String userEmail;
     //To create shared pref to hold user profile and settings
     SharedPreferences userPref;
@@ -102,24 +102,24 @@ public class FacebookLoginActivity extends AppCompatActivity {
                             Log.v("LoginActivity Response ", response.toString());
 
                             try {
-                                String Name = object.getString("name");
+                                userName = object.getString("name");
 
-                                String Email = object.getString("email");
+                               userEmail = object.getString("email");
 
-                                String PictureURL= object.getJSONObject("picture").getJSONObject("data").getString("url");
-                                Log.v("Email = ", " " + Email);
+                                userPictureURL= object.getJSONObject("picture").getJSONObject("data").getString("url");
+                                Log.v("Email = ", " " + userEmail);
 
                                 Context context = getApplicationContext();
-                                CharSequence text = getString(R.string.signed_in_fmt, Name);
+                                CharSequence text = getString(R.string.signed_in_fmt, userName);
                                 int duration = Toast.LENGTH_SHORT;
                                 Toast toast = Toast.makeText(context, text, duration);
                                 toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
                                 toast.getView().setBackgroundColor(getResources().getColor(R.color.colorAccent));
                                 toast.show();
 
-                                editPref.putString("userName", Name);
-                                editPref.putString("userEmail", Email);
-                                editPref.putString("userPhotoURI", PictureURL);
+                                editPref.putString("userName", userName);
+                                editPref.putString("userEmail", userEmail);
+                                editPref.putString("userPhotoURI", userPictureURL);
                                 editPref.commit();
 
                             } catch (JSONException e) {
@@ -148,7 +148,8 @@ public class FacebookLoginActivity extends AppCompatActivity {
 
         @Override
         public void onError(FacebookException exception) {
-            Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+           // Toast.makeText(getApplicationContext(), exception.getMessage(), Toast.LENGTH_LONG).show();
+            loginSuccess();
         }
     };
 
